@@ -39,15 +39,19 @@ class MainActivity : ComponentActivity() {
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            Log.i("kilo", "Permission granted")
+    ) {
+        if (it) {
+            Log.d("PERMISSION:", "granted")
             shouldShowCamera.value = true
         } else {
-            Log.i("kilo", "Permission denied")
+            Log.d("PERMISSION:", "denied")
         }
     }
 
+    private fun backScreen() {
+        shouldShowPhoto.value = false
+        shouldShowCamera.value = true
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -58,10 +62,7 @@ class MainActivity : ComponentActivity() {
                     onError = { Log.e("kilo", "View error:", it) }
                 )
             }
-            fun backScreen() {
-                shouldShowPhoto.value = false
-                shouldShowCamera.value = true
-            }
+
             if (shouldShowPhoto.value) {
                 BackHandler(true) {
                     backScreen()
